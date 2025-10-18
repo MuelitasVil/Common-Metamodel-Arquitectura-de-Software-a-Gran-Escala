@@ -1,0 +1,23 @@
+Model:
+'architecture' ':'
+elements*=Element
+;
+Element:
+Component | Connector
+;
+Component:
+
+[LSSA_2025ii] - Laboratory 2.md 2025-10-17
+
+2 / 9
+'component' type=ComponentType name=ID
+;
+Connector:
+'connector' type=ConnectorType from=[Component] '->' to=[Component]
+;
+ComponentType:
+'frontend' | 'backend' | 'database'
+;
+ConnectorType:
+'http' | 'db_connector'
+;
