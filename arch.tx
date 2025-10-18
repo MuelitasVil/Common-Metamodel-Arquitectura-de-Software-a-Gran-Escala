@@ -25,7 +25,7 @@ ComponentType:
 ;
 
 ConnectorType:
-'RESTful' | 'db_connector' | 'gRCP' | 'MQTT' | 'SDK'
+'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK'
 ;
 
 PhysicalComponent:
