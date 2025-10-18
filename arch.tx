@@ -1,23 +1,51 @@
-Model:
+System:
+    'sos' ':' 
+    systems*=SubSystem
+;
+
+SubSystem:
 'architecture' ':'
 elements*=Element
 ;
+
 Element:
 Component | Connector
 ;
-Component:
 
-[LSSA_2025ii] - Laboratory 2.md 2025-10-17
-
-2 / 9
+Component: 
 'component' type=ComponentType name=ID
 ;
+
 Connector:
-'connector' type=ConnectorType from=[Component] '->' to=[Component]
+'connector' type=ConnectorType from=[Component | SubSystem] '->' to=[Component | SubSystem]
 ;
+
 ComponentType:
-'frontend' | 'backend' | 'database'
+'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage'
 ;
+
 ConnectorType:
-'http' | 'db_connector'
+'http' | 'db_connector' | 'gRCP' | 'MQTT' | 'SDK'
 ;
+
+PhysicalComponent:
+Sensor | Vehicle | 'contenedor'
+;
+
+Sensor :
+    'sensor' name=ID ('extends' superType=[Sensor])? '{'
+        'type' type=TypeSensor 
+    '}';
+
+Vehicle :
+    'vehicle' name=ID ('extends' superType=[Sensor])? '{'
+        'type' type=TypeSensor 
+    '}';
+
+TypeSensor : 
+'sensor Peso' | 'sensor Velocidad' | 'GPS' | 'Radio' | 'Sensor de distancia' | 'weather station' | 'entry point'
+| 'sensor de caudal' 
+
+TypeVehicle : 
+'truck' | 'grúas' | 'barco' | 'tren'
+
