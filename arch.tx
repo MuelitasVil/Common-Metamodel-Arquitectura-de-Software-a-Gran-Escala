@@ -21,7 +21,7 @@ Connector:
 ;
 
 ComponentType:
-'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage'
+'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage' | 'apiGateway'
 ;
 
 ConnectorType:
