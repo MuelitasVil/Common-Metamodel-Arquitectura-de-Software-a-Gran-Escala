@@ -4,32 +4,36 @@ System:
 ;
 
 SubSystem:
-'architecture' ':'
+'subsystem' ':' name=ID
 elements*=Element
 ;
 
 Element:
-Component | Connector
+Component | Connector 
 ;
 
-Component: 
-'component' type=ComponentType name=ID
+Component:
+LogicalComponent | PhysicalComponent | SubSystem
+;
+
+LogicalComponent: 
+'component' type=LogicalComponentType name=ID
 ;
 
 Connector:
-'connector' type=ConnectorType from=[Component | SubSystem] '->' to=[Component | SubSystem]
+'connector' type=ConnectorType from=[Component] '->' to=[Component]
 ;
 
-ComponentType:
-'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage'
+LogicalComponentType:
+'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage'
 ;
 
 ConnectorType:
-'http' | 'db_connector' | 'gRCP' | 'MQTT' | 'SDK'
+'http' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'amqp' | 'CoAP' | 'gsm' | 'wire'
 ;
 
 PhysicalComponent:
-Sensor | Vehicle | 'contenedor'
+Sensor | Vehicle | HardwareDevice |'contenedor'
 ;
 
 Sensor :
@@ -38,14 +42,26 @@ Sensor :
     '}';
 
 Vehicle :
-    'vehicle' name=ID ('extends' superType=[Sensor])? '{'
-        'type' type=TypeSensor 
+    'vehicle' name=ID ('extends' superType=[Vehicle])? '{'
+        'type' type=VehicleType 
     '}';
 
+
 TypeSensor : 
-'sensor Peso' | 'sensor Velocidad' | 'GPS' | 'Radio' | 'Sensor de distancia' | 'weather station' | 'entry point'
-| 'sensor de caudal' 
+'weightSensor' | 'velocitySensor' | 'Sensor de distancia' | 'weather station' | 'entry point'
+| 'sensor de caudal'
+;
 
-TypeVehicle : 
-'truck' | 'grúas' | 'barco' | 'tren'
+VehicleType :
+'truck' | 'tren' | 'barco' | 'grúas'
+;
 
+
+HardwareDevice:
+    'hardware' name=ID ('extends' superType=[HardwareDevice])? '{'
+        'type' type=HardwareType
+    '}';
+
+HardwareType:
+'IoT' | 'radio' | 'GPS'
+;

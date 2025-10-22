@@ -1,0 +1,54 @@
+subsystem: RTS
+    sensor weight_sensor extends Sensor {
+        type weightSensor
+    }
+    sensor velocity_sensor extends Sensor {
+        type velocitySensor
+    }
+    hardware GPS_device extends HardwareDevice {
+        type GPS
+    }
+    hardware IoT_gateway extends HardwareDevice {
+        type IoT
+    }
+    hardware road_communication extends HardwareDevice {
+        type radio
+    }
+
+    vehicle rts_truck extends Vehicle {
+        type truck
+    } 
+
+    component backend travel_monitor
+    component backend API
+    component backend road_safety
+    component backend orchestrator
+    component backend rts_communication_interface
+    component backend fleet_manager
+    component backend route_manager
+    component backend freight_manager
+    component database land_database
+    connector wire rts_truck -> weight_sensor
+    connector wire rts_truck -> velocity_sensor
+    connector wire rts_truck -> GPS_device
+    connector CoAP weight_sensor -> IoT_gateway
+    connector CoAP velocity_sensor -> IoT_gateway
+    connector CoAP GPS_device -> IoT_gateway
+    connector MQTT IoT_gateway -> travel_monitor
+    connector gsm road_communication -> travel_monitor
+    connector http travel_monitor -> orchestrator
+    connector http orchestrator -> travel_monitor
+    connector http orchestrator -> fleet_manager
+    connector http orchestrator -> route_manager
+    connector http orchestrator -> freight_manager
+    connector http API -> travel_monitor
+    connector http rts_communication_interface -> travel_monitor
+    connector http orchestrator -> rts_communication_interface
+    connector db_connector fleet_manager -> land_database
+    connector db_connector route_manager -> land_database
+    connector db_connector freight_manager -> land_database
+    connector db_connector travel_monitor -> land_database
+
+
+
+    PROVISIONAL: connector http SCN -> rts_communication_interface
