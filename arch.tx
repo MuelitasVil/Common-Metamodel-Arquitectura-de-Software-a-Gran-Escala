@@ -24,12 +24,12 @@ Connector:
 'connector' type=ConnectorType from=[Component] '->' to=[Component]
 ;
 
-LogicalComponentType:
-'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage'
+ComponentType:
+'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage' | 'apiGateway'
 ;
 
 ConnectorType:
-'http' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'amqp' | 'CoAP' | 'gsm' | 'wire'
+'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK'
 ;
 
 PhysicalComponent:
