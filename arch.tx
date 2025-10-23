@@ -21,11 +21,11 @@ Connector:
 ;
 
 ComponentType:
-'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage'
+'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage' | 'apiGateway'
 ;
 
 ConnectorType:
-'http' | 'db_connector' | 'gRCP' | 'MQTT' | 'SDK'
+'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK'
 ;
 
 PhysicalComponent:
