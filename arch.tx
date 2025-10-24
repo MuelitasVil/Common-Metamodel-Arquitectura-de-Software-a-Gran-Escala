@@ -1,67 +1,62 @@
 System:
-    'sos' ':' 
-    systems*=SubSystem
+    'sos' ':' systems*=SubSystem
 ;
 
 SubSystem:
-'subsystem' ':' name=ID
-elements*=Element
+    'subsystem' ':' name=ID
+    elements*=Element
 ;
 
 Element:
-Component | Connector 
+    Component | Connector | HardwareDevice
 ;
 
 Component:
-LogicalComponent | PhysicalComponent | SubSystem
+    'component' type=ComponentType name=ID
 ;
 
-LogicalComponent: 
-'component' type=LogicalComponentType name=ID
+Connectable:
+    Component | HardwareDevice
 ;
 
 Connector:
-'connector' type=ConnectorType from=[Component] '->' to=[Component]
+    'connector' type=ConnectorType from=[Connectable] '->' to=[Connectable]
 ;
 
 ComponentType:
-'frontend' | 'backend' | 'database' | 'channel' | PhysicalComponent | 'loadBalancer' | 'fileStorage' | 'apiGateway'
+    'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway'
+    | 'sensor' | 'vehicle' | 'contenedor'
 ;
 
 ConnectorType:
-'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK'
+    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket'
 ;
 
-PhysicalComponent:
-Sensor | Vehicle | HardwareDevice |'contenedor'
-;
 
-Sensor :
+Sensor:
     'sensor' name=ID ('extends' superType=[Sensor])? '{'
-        'type' type=TypeSensor 
-    '}';
+        'type' type=SensorType
+    '}'
+;
 
-Vehicle :
+Vehicle:
     'vehicle' name=ID ('extends' superType=[Vehicle])? '{'
-        'type' type=VehicleType 
-    '}';
-
-
-TypeSensor : 
-'weightSensor' | 'velocitySensor' | 'Sensor de distancia' | 'weather station' | 'entry point'
-| 'sensor de caudal'
+        'type' type=VehicleType
+    '}'
 ;
-
-VehicleType :
-'truck' | 'tren' | 'barco' | 'grúas'
-;
-
 
 HardwareDevice:
-    'hardware' name=ID ('extends' superType=[HardwareDevice])? '{'
-        'type' type=HardwareType
-    '}';
+    'hardware'  type=HardwareType name=ID
+;
+
+SensorType:
+    'weightSensor' | 'velocitySensor' | 'sensor_de_distancia' | 'weather_station' | 'entry_point' | 'sensor_de_caudal'
+;
+
+VehicleType:
+    'truck' | 'tren' | 'barco' | 'grua'
+;
 
 HardwareType:
-'IoT' | 'radio' | 'GPS'
+    'IoT' | 'radio' | 'GPS'
 ;
