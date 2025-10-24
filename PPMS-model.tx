@@ -1,0 +1,43 @@
+sos:
+subsystem: PPMS
+    component frontend web_service
+    component apiGateway API_Gateway
+    component backend reports_management_service
+    component backend cargo_management_service
+    component backend personal_management_service
+    component backend ship_control_service
+    component backend port_operation_service
+    component backend storage_management_service
+    component backend bunkering_management_service
+    component backend traffic_control_service
+    component database reports_db
+    component database cargo_db
+    component database personal_management_db
+    component database ship_control_db
+    component database port_operation_db
+    component database storage_management_db
+    component database bunkering_management_db
+    component database traffic_control_db
+
+    hardware IoT ship_location
+    
+    
+    connector WebSocket traffic_control_service  -> ship_location
+    connector RESTful web_service -> API_Gateway
+    connector RESTful API_Gateway -> reports_management_service
+    connector RESTful API_Gateway -> cargo_management_service
+    connector RESTful API_Gateway -> personal_management_service
+    connector RESTful API_Gateway -> ship_control_service
+    connector RESTful API_Gateway -> port_operation_service
+    connector RESTful API_Gateway -> storage_management_service
+    connector RESTful API_Gateway -> bunkering_management_service
+    connector RESTful API_Gateway -> traffic_control_service
+    connector db_connector reports_management_service -> reports_db
+    connector db_connector cargo_management_service -> cargo_db
+    connector db_connector personal_management_service -> personal_management_db
+    connector db_connector ship_control_service -> ship_control_db
+    connector db_connector port_operation_service -> port_operation_db
+    connector db_connector storage_management_service -> storage_management_db
+    connector db_connector bunkering_management_service -> bunkering_management_db
+    connector db_connector traffic_control_service -> traffic_control_db
+    
