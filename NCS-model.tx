@@ -45,7 +45,7 @@ subsystem: NCS
     connector ampq external_comunnication_adapter_service -> pacific_port_queue
     connector ampq intake_ports_service -> ports_queue
     connector ampq ports_queue -> manifest_processor_service
-    connector http storage_service -> stg_files
+    connector RESTful storage_service -> stg_files
     connector db_connector monitoring_reporting_service -> monitoring_reporting_database
     connector db_connector observability_service -> observability_database
     connector db_connector routes_service -> routes_database
