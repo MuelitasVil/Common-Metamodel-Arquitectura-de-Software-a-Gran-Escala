@@ -20,7 +20,7 @@ Connectable:
 ;
 
 Connector:
-    'connector' type=ConnectorType from=[Connectable] '->' to=[Connectable]
+    'connector' type=ConnectorType fromComponent=[Component] '->' toComponent=[Component]
 ;
 
 ComponentType:
@@ -29,7 +29,7 @@ ComponentType:
 ;
 
 ConnectorType:
-    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq' 
+    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq'  | 'CoAP' | 'gsm'
 ;
 
 
