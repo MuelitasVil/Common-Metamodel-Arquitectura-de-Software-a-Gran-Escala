@@ -1,0 +1,97 @@
+sos:
+subsystem: CPMS
+    component frontend ui
+
+    component apiGateway API_Gateway
+    
+    component backend request_manager_ms
+    component backend ship_management_ms
+    component backend personnel_management_ms
+    component backend cargo_and_container_management_ms
+    component backend infrastructure_management_ms
+    component backend iot_ms
+    component backend audit_manager_ms  
+
+    component database ships_management_db
+    component database personnel_management_db
+    component database cargo_and_container_management_db
+    component database infrastructure_management_db
+    component database iot_noSQL_db
+    component database iot_SQL_db
+    component database audit_manager_db
+
+    component eventBus request_channel
+    component eventBus response_channel
+    component eventBus audit_channel
+    component eventBus monitoring_channel
+
+    vehicle cp_crain extends Vehicle {
+        type grúa
+    } 
+   
+    vehicle cp_truck extends Vehicle {
+        type truck
+    } 
+    
+    sensor cp_entry_point_sensor extends Sensor {
+        type entry_point
+    }
+
+    sensor cp_entry_weather_station extends Sensor {
+        type weather_station
+    }
+
+
+    connector RESTful ui -> API_Gateway
+    connector RESTful API_Gateway -> ship_management_ms
+    connector RESTful API_Gateway -> request_manager_ms
+    connector RESTful API_Gateway -> personnel_management_ms
+    connector RESTful API_Gateway -> cargo_and_container_management_ms
+    connector RESTful API_Gateway -> infrastructure_management_ms
+	
+    connector RESTful ship_management_ms -> personnel_management_ms
+    connector RESTful ship_management_ms -> cargo_and_container_management_ms
+    connector RESTful ship_management_ms -> infrastructure_management_ms
+
+    connector RESTful personnel_management_ms -> ship_management_ms 
+    connector RESTful personnel_management_ms ->
+    cargo_and_container_management_ms
+    connector RESTful personnel_management_ms -> infrastructure_management_ms
+
+    connector RESTful cargo_and_container_management_ms -> ship_management_ms 
+    connector RESTful cargo_and_container_management_ms -> personnel_management_ms
+    connector RESTful cargo_and_container_management_ms -> infrastructure_management_ms    
+    
+    connector RESTful infrastructure_management_ms -> ship_management_ms
+    connector RESTful infrastructure_management_ms -> personnel_management_ms
+    connector RESTful infrastructure_management_ms -> cargo_and_container_management_ms
+
+    connector gRPC ship_management_ms -> iot_ms
+    connector gRPC personnel_management_ms -> iot_ms
+    connector gRPC cargo_and_container_management_ms -> iot_ms
+    connector gRPC infrastructure_management_ms -> iot_ms
+    
+    connector MQTT monitoring_channel -> iot_ms
+    connector MQTT cp_crain  -> monitoring_channel 
+    connector MQTT cp_truck  -> monitoring_channel 
+    connector MQTT cp_entry_point_sensor  -> monitoring_channel 
+    connector MQTT cp_entry_weather_station  -> monitoring_channel 
+
+    connector SDK request_manager_ms -> request_channel
+    connector SDK request_manager_ms -> response_channel
+    connector SDK request_manager_ms -> audit_channel
+    connector SDK ship_management_ms -> audit_channel
+    connector SDK personnel_management_ms -> audit_channel
+    connector SDK cargo_and_container_management_ms -> audit_channel
+    connector SDK infrastructure_management_ms -> audit_channel
+    connector SDK iot_ms -> audit_channel
+    connector SDK audit_manager_ms -> audit_channel
+
+    connector db_connector request_manager_ms -> request_manager_db
+    connector db_connector ship_management_ms -> ship_management_db
+    connector db_connector personnel_management_ms -> personnel_management_db
+    connector db_connector cargo_and_container_management_ms -> cargo_and_container_management_db
+    connector db_connector infrastructure_management_ms -> infrastructure_management_db
+    connector db_connector iot_ms -> iot_noSQL_db
+    connector db_connector iot_ms -> iot_SQL_db
+    connector db_connector audit_manager_ms   -> audit_manager_db

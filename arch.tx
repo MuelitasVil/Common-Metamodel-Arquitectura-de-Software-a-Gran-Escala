@@ -29,7 +29,7 @@ ComponentType:
 ;
 
 ConnectorType:
-    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq'  | 'CoAP' | 'gsm'
+    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq'  | 'CoAP' | 'gsm' | 'sqs'
 ;
 
 
