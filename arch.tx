@@ -54,7 +54,7 @@ SensorType:
 ;
 
 VehicleType:
-    'truck' | 'tren' | 'barco' | 'grua'
+    'truck' | 'tren' | 'vessel' | 'grua'
 ;
 
 HardwareType:

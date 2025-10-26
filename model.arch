@@ -1,0 +1,14 @@
+import "SubSystems/Fluvial.arch"
+
+subsystem Fluvial_Transportation_System
+subsystem Road_Transportation_System
+subsystem Rail_Transportation_System
+subsystem Pacific_Port_System
+subsystem Caribbean_Port_System
+subsystem National_Coordination_System
+
+connector RESTful Fluvial_Transportation_System -> National_Coordination_System
+connector RESTful Road_Transportation_System -> National_Coordination_System
+connector RESTful Rail_Transportation_System -> National_Coordination_System
+connector RESTful Pacific_Port_System -> National_Coordination_System
+connector RESTful Caribbean_Port_System -> National_Coordination_System
