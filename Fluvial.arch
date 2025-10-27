@@ -1,0 +1,45 @@
+sos:
+    subsystem: Fluvial_Transportation_System {
+        vehicle Vessel_1 {
+            type vessel
+
+            hardware velocitySensor Speed_Sensor
+            hardware GPS GPS_Sensor
+        }
+
+        hardware IoT IoT_Gateway
+
+        component backend Route_Manager
+        component backend Security_System
+        component backend Meteorology_System
+        component backend Vessel_Manager
+        component backend Traceability_Manager
+        component backend RealTime_Processing
+        component backend Storage_Manager
+        component backend Information_Transmission
+
+        component database Routes_DB
+        component database Security_DB
+        component database Meteorology_DB
+        component database Vessels_DB
+        component database Traceability_DB
+        component database Storage_DB
+
+        connector db_connector Route_Manager -> Routes_DB
+        connector db_connector Security_System -> Security_DB
+        connector db_connector Meteorology_System -> Meteorology_DB
+        connector db_connector Vessel_Manager -> Vessels_DB
+        connector db_connector Traceability_Manager -> Traceability_DB
+        connector db_connector Storage_Manager -> Storage_DB
+
+        connector RESTful Vessel_1 -> IoT_Gateway
+        connector MQTT IoT_Gateway -> RealTime_Processing
+
+        connector RESTful Information_Transmission -> Route_Manager
+        connector RESTful Information_Transmission -> Security_System
+        connector RESTful Information_Transmission -> Meteorology_System
+        connector RESTful Information_Transmission -> Vessel_Manager
+        connector RESTful Information_Transmission -> Traceability_Manager
+        connector RESTful Information_Transmission -> Storage_Manager
+        connector RESTful Information_Transmission -> RealTime_Processing
+    }

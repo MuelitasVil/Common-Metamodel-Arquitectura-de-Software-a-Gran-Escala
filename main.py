@@ -6,7 +6,7 @@ import os
 mm = metamodel_from_file('arch.tx')
 
 # Carga el modelo (instancia)
-model = mm.model_from_file('PPMS-model.tx')
+model = mm.model_from_file('Fluvial.arch')
 
 print("Modelo cargado correctamente:", model)
 
