@@ -1,0 +1,52 @@
+subsystem: NCS
+    component frontend ncs_frontend
+
+    component loadBalancer ncs_load_balancer
+
+    component apiGateway road_api_gateway
+    component apiGateway fluvial_api_gateway
+    component apiGateway rail_api_gateway
+    component apiGateway orchestrator_api_gateway
+
+    component backend storage_service
+    component backend manifest_processor_service
+    component backend intake_ports_service
+    component backend external_comunnication_adapter_service
+    component backend monitoring_reporting_service
+    component backend observability_service
+    component backend routes_service
+    component backend alerts_service
+
+    component eventBus ports_queue
+    component eventBus caribbean_port_queue
+    component eventBus pacific_port_queue
+    component eventBus alerts_queue
+
+    component fileStorage stg_files
+    component database manifest_database
+    component database monitoring_reporting_database
+    component database observability_database
+    component database routes_database
+
+    connector RESTful ncs_frontend -> ncs_load_balancer
+    connector RESTful ncs_load_balancer -> road_api_gateway
+    connector RESTful ncs_load_balancer -> fluvial_api_gateway
+    connector RESTful ncs_load_balancer -> rail_api_gateway
+    connector RESTful ncs_load_balancer -> orchestrator_api_gateway
+    connector RESTful ncs_load_balancer -> external_comunnication_adapter
+    connector RESTful orchestrator_api_gateway -> storage_service
+    connector RESTful orchestrator_api_gateway -> manifest_processor_service
+    connector RESTful orchestrator_api_gateway -> intake_ports_service
+    connector RESTful orchestrator_api_gateway -> monitoring_reporting_service
+    connector RESTful orchestrator_api_gateway -> observability_service
+    connector RESTful orchestrator_api_gateway -> routes_service
+    connector RESTful orchestrator_api_gateway -> alerts_service
+    connector ampq external_comunnication_adapter_service -> caribbean_port_queue
+    connector ampq external_comunnication_adapter_service -> pacific_port_queue
+    connector ampq intake_ports_service -> ports_queue
+    connector ampq ports_queue -> manifest_processor_service
+    connector RESTful storage_service -> stg_files
+    connector db_connector monitoring_reporting_service -> monitoring_reporting_database
+    connector db_connector observability_service -> observability_database
+    connector db_connector routes_service -> routes_database
+    connector db_connector intake_ports_service -> manifest_database

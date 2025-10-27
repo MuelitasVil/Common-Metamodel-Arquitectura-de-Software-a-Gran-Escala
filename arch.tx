@@ -21,15 +21,16 @@ Connectable:
 ;
 
 Connector:
-    'connector' type=ConnectorType from=[Connectable] '->' to=[Connectable]
+    'connector' type=ConnectorType fromComponent=[Component] '->' toComponent=[Component]
 ;
 
 ComponentType:
-    'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway' | 'contenedor'
+    'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway'
+    | 'sensor' | 'vehicle' | 'contenedor' | 'eventBus'
 ;
 
 ConnectorType:
-    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket'
+    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq'  | 'CoAP' | 'gsm' | 'sqs'
 ;
 
 HardwareDevice:
