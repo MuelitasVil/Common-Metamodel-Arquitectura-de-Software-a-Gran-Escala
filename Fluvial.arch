@@ -16,7 +16,11 @@ sos:
         component backend Traceability_Manager
         component backend RealTime_Processing
         component backend Storage_Manager
-        component backend Information_Transmission
+        component apiGateway Information_Transmission
+
+        component frontend WebApp
+        component proxy Proxy
+        component interface Interface
 
         component database Routes_DB
         component database Security_DB
@@ -42,4 +46,8 @@ sos:
         connector RESTful Information_Transmission -> Traceability_Manager
         connector RESTful Information_Transmission -> Storage_Manager
         connector RESTful Information_Transmission -> RealTime_Processing
+
+        connector RESTful Information_Transmission -> Interface
+        connector GraphQL Information_Transmission -> Interface      
+        connector RESTful WebApp -> Proxy
     }

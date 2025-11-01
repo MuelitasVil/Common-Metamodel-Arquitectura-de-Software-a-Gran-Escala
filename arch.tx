@@ -26,11 +26,11 @@ Connector:
 
 ComponentType:
     'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway'
-    | 'sensor' | 'vehicle' | 'contenedor' | 'eventBus'
+    | 'sensor' | 'vehicle' | 'contenedor' | 'eventBus' | 'proxy' | 'interface'
 ;
 
 ConnectorType:
-    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq'  | 'CoAP' | 'gsm' | 'sqs'
+    'RESTful' | 'db_connector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'ampq'  | 'CoAP' | 'gsm' | 'sqs' | 'GraphQL'
 ;
 
 HardwareDevice:
