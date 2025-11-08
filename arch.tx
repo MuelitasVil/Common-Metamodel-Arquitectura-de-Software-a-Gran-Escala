@@ -27,6 +27,7 @@ Connector:
 ComponentType:
     'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway'
     | 'sensor' | 'vehicle' | 'contenedor' | 'eventBus' | 'proxy' | 'interface' | 'queue' | 'externalService'
+    | 'reverseProxy' | 'monolith'
 ;
 
 ConnectorType:

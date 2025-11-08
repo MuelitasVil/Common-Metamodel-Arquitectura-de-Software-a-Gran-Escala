@@ -1,6 +1,8 @@
 subsystem: NCS
     component frontend ncs_frontend
 
+    component reverseProxy ncs_reverse_proxy
+
     component loadBalancer ncs_load_balancer
 
     component apiGateway road_api_gateway
@@ -9,6 +11,7 @@ subsystem: NCS
     component apiGateway orchestrator_api_gateway
 
     component backend storage_service
+    component backend planner_service
     component backend manifest_processor_service
     component backend intake_ports_service
     component backend external_comunnication_adapter_service
@@ -16,6 +19,8 @@ subsystem: NCS
     component backend observability_service
     component backend routes_service
     component backend alerts_service
+
+    component monolith ncs_monolith_backup
 
     component eventBus ports_queue
     component eventBus caribbean_port_queue
@@ -28,25 +33,92 @@ subsystem: NCS
     component database observability_database
     component database routes_database
 
-    connector RESTful ncs_frontend -> ncs_load_balancer
-    connector RESTful ncs_load_balancer -> road_api_gateway
-    connector RESTful ncs_load_balancer -> fluvial_api_gateway
-    connector RESTful ncs_load_balancer -> rail_api_gateway
+    component externalService road_transportation_service
+    component externalService fluvial_transportation_service
+    component externalService rail_transportation_service
+
+    component externalService caribbean_port_management_service
+    component externalService pacific_port_management_service
+
+    hardware weightSensor warehouse_storage_sensor
+
+    connector RESTful ncs_frontend -> ncs_reverse_proxy
+    connector RESTful ncs_reverse_proxy -> ncs_frontend
+
+    connector RESTful ncs_reverse_proxy -> ncs_load_balancer
+    connector RESTful ncs_load_balancer -> ncs_reverse_proxy
+
+    connector RESTful ncs_reverse_proxy -> road_api_gateway
+    connector RESTful road_api_gateway -> ncs_reverse_proxy
+    connector RESTful road_api_gateway -> road_transportation_service
+    connector amqp alerts_queue -> road_transportation_service
+
+    connector RESTful ncs_reverse_proxy -> fluvial_api_gateway
+    connector RESTful fluvial_api_gateway -> ncs_reverse_proxy
+    connector RESTful fluvial_api_gateway -> fluvial_transportation_service
+    connector amqp alerts_queue -> fluvial_transportation_service
+
+    connector RESTful ncs_reverse_proxy -> rail_api_gateway
+    connector RESTful rail_api_gateway -> ncs_reverse_proxy
+    connector RESTful rail_api_gateway -> rail_transportation_service
+    connector amqp alerts_queue -> rail_transportation_service
+
+    connector RESTful external_comunnication_adapter_service -> ncs_reverse_proxy
+    connector amqp external_comunnication_adapter_service -> caribbean_port_queue
+    connector amqp external_comunnication_adapter_service -> pacific_port_queue
+    connector amqp caribbean_port_management_service -> caribbean_port_queue
+    connector amqp pacific_port_management_service -> caribbean_port_queue
+
     connector RESTful ncs_load_balancer -> orchestrator_api_gateway
-    connector RESTful ncs_load_balancer -> external_comunnication_adapter
-    connector RESTful orchestrator_api_gateway -> storage_service
-    connector RESTful orchestrator_api_gateway -> manifest_processor_service
+    connector RESTful orchestrator_api_gateway -> ncs_load_balancer 
+
     connector RESTful orchestrator_api_gateway -> intake_ports_service
+    connector RESTful intake_ports_service -> orchestrator_api_gateway 
+
+    connector RESTful manifest_processor_service -> planner_service
+
+    connector RESTful orchestrator_api_gateway -> planner_service
+    connector RESTful planner_service -> orchestrator_api_gateway
+
+    connector RESTful orchestrator_api_gateway -> storage_service
+    connector RESTful storage_service -> orchestrator_api_gateway
+
     connector RESTful orchestrator_api_gateway -> monitoring_reporting_service
+    connector RESTful monitoring_reporting_service -> orchestrator_api_gateway 
+
     connector RESTful orchestrator_api_gateway -> observability_service
+    connector RESTful observability_service -> orchestrator_api_gateway 
+
     connector RESTful orchestrator_api_gateway -> routes_service
+    connector RESTful routes_service -> orchestrator_api_gateway
+
     connector RESTful orchestrator_api_gateway -> alerts_service
-    connector ampq external_comunnication_adapter_service -> caribbean_port_queue
-    connector ampq external_comunnication_adapter_service -> pacific_port_queue
-    connector ampq intake_ports_service -> ports_queue
-    connector ampq ports_queue -> manifest_processor_service
+    connector RESTful alerts_service -> orchestrator_api_gateway
+
+    connector amqp intake_ports_service -> ports_queue
+    connector amqp ports_queue -> manifest_processor_service
+    connector amqp manifest_processor_service -> ports_queue 
+
+    connector db_connector intake_ports_service -> manifest_database
     connector RESTful storage_service -> stg_files
     connector db_connector monitoring_reporting_service -> monitoring_reporting_database
     connector db_connector observability_service -> observability_database
     connector db_connector routes_service -> routes_database
-    connector db_connector intake_ports_service -> manifest_database
+
+    connector RESTful ncs_monolith_backup -> orchestrator_api_gateway
+    connector RESTful orchestrator_api_gateway -> ncs_monolith_backup
+
+    connector amqp ncs_monolith_backup -> ports_queue
+    connector amqp ncs_monolith_backup -> alerts_queue
+    connector amqp alerts_queue -> ncs_monolith_backup
+
+    connector db_connector ncs_monolith_backup -> manifest_database
+    connector RESTful ncs_monolith_backup -> stg_files
+    connector db_connector ncs_monolith_backup -> monitoring_reporting_database
+    connector db_connector ncs_monolith_backup -> observability_database
+    connector db_connector ncs_monolith_backup -> routes_database
+
+    connector MQTT wareho -use_storage_sensor -> monitoring_reporting_service
+
+
+    
