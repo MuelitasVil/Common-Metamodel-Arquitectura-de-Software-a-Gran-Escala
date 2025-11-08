@@ -9,7 +9,7 @@ SubSystem:
 ;
 
 Element:
-    Connectable | Connector | HardwareDevice | Vehicle 
+    Connectable | Connector
 ;
 
 Component:
