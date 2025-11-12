@@ -53,6 +53,6 @@ sos:
 
 
         connector RESTful Information_Transmission -> Interface
-        connector GraphQL Information_Transmission -> Interface      
+        connector GraphQL Information_Transmission -> Proxy      
         connector RESTful WebApp -> Proxy
     }
