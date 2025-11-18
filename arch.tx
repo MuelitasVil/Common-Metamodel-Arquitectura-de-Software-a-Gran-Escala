@@ -1,54 +1,35 @@
-System:
-    'sos' ':' systems+=SubSystem*
-;
+sos:
+subsystem: CPMS
+    component frontend ui
 
-SubSystem:
-    'subsystem' ':' name=ID '{'
-        elements+=Element*
-    '}'
-;
+    component apiGateway API_Gateway
+    
+    component loadBalancer Load_Balancer
 
-Element:
-    Connectable | Connector
-;
+    component backend request_manager_ms
+    component backend ship_management_ms
+    component backend personnel_management_ms
+    component backend cargo_and_container_management_ms
+    component backend infrastructure_management_ms
+    component backend iot_ms
+    component backend audit_manager_ms  
 
-Component:
-    'component' type=ComponentType name=ID
-;
+    # --- Bases con CQRS (master/slave) ---
+    component database ships_management_db_master
+    component database ships_management_db_slave
 
-Connectable:
-    Component | HardwareDevice | Vehicle
-;
+    component database cargo_and_container_management_db_master
+    component database cargo_and_container_management_db_slave
 
-Connector:
-    'connector' type=ConnectorType fromComponent=[Connectable] '->' toComponent=[Connectable]
-;
+    component database iot_noSQL_db_master
+    component database iot_noSQL_db_slave
+    component database iot_SQL_db_master
+    component database iot_SQL_db_slave
 
-ComponentType:
-    'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway'
-    | 'sensor' | 'vehicle' | 'contenedor' | 'eventBus' | 'proxy' | 'interface' | 'queue' | 'externalService'
-    | 'reverseProxy' | 'monolith'
-;
+    # --- Bases sin CQRS (una sola) ---
+    component database personnel_management_db
+    component database infrastructure_management_db
+    component database audit_manager_db
 
-ConnectorType:
-    'RESTful' | 'dbConnector' | 'gRPC' | 'MQTT' | 'SDK' | 'WebSocket' | 'amqp'  | 'CoAP' | 'gsm' | 'sqs' | 'GraphQL' | 'TCP/IP' | 'Bus' | 'Satellite'
-;
-
-HardwareDevice:
-    'hardware' type=HardwareType name=ID
-;
-
-HardwareType:
-    'IoT' | 'radio' | 'weightSensor' | 'velocitySensor' | 'sensor_de_distancia' | 'weather_station' | 'entry_point' | 'sensor_de_caudal' | 'GPS' | 'gas_station' | 'control_tower'
-;
-
-Vehicle:
-    'vehicle' name=ID '{'
-        'type' type=VehicleType
-        sensors+=HardwareDevice*
-    '}'
-;
-
-VehicleType:
-    'truck' | 'tren' | 'vessel' | 'grua' | 'ship'
-;
+    component eventBus request_channel
+    component

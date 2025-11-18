@@ -4,6 +4,8 @@ subsystem: CPMS
 
     component apiGateway API_Gateway
     
+    component loadBalancer Load_Balancer
+
     component backend request_manager_ms
     component backend ship_management_ms
     component backend personnel_management_ms
@@ -54,12 +56,14 @@ subsystem: CPMS
         type black_box
     }
 
+    # --- Conectores ---
     connector RESTful ui -> API_Gateway
-    connector RESTful API_Gateway -> ship_management_ms
-    connector RESTful API_Gateway -> request_manager_ms
-    connector RESTful API_Gateway -> personnel_management_ms
-    connector RESTful API_Gateway -> cargo_and_container_management_ms
-    connector RESTful API_Gateway -> infrastructure_management_ms
+    connector RESTful API_Gateway -> loadBalancer
+    connector RESTful loadBalancer -> ship_management_ms
+    connector RESTful loadBalancer -> request_manager_ms
+    connector RESTful loadBalancer -> personnel_management_ms
+    connector RESTful loadBalancer -> cargo_and_container_management_ms
+    connector RESTful loadBalancer -> infrastructure_management_ms
 	
     connector RESTful ship_management_ms -> personnel_management_ms
     connector RESTful ship_management_ms -> cargo_and_container_management_ms
