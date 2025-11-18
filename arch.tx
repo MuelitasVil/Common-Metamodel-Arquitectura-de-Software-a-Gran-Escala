@@ -13,7 +13,7 @@ Element:
 ;
 
 Component:
-    'component' type=ComponentType name=ID
+    'component' type=ComponentType name=ID ('capacity' '=' capacity=INT)? ('instances' '=' instances=INT)?
 ;
 
 Connectable:
@@ -27,7 +27,7 @@ Connector:
 ComponentType:
     'frontend' | 'backend' | 'database' | 'channel' | 'loadBalancer' | 'fileStorage' | 'apiGateway'
     | 'sensor' | 'vehicle' | 'contenedor' | 'eventBus' | 'proxy' | 'interface' | 'queue' | 'externalService'
-    | 'reverseProxy' | 'monolith'
+    | 'reverseProxy' | 'monolith' | 'cache' | 'resilienceManager' | 'connectionPool'
 ;
 
 ConnectorType:
