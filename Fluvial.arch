@@ -1,58 +1,158 @@
 sos:
     subsystem: Fluvial_Transportation_System {
+        
         vehicle Vessel_1 {
             type vessel
-
-            hardware velocitySensor Speed_Sensor
-            hardware GPS GPS_Sensor
+            hardware velocitySensor Speed_Sensor_1
+            hardware GPS GPS_Sensor_1
         }
-
+        
+        vehicle Vessel_2 {
+            type vessel
+            hardware velocitySensor Speed_Sensor_2
+            hardware GPS GPS_Sensor_2
+        }
+        
         hardware IoT IoT_Gateway
-
-        component backend Route_Manager
-        component backend Security_System
-        component backend Meteorology_System
-        component backend Vessel_Manager
-        component backend Traceability_Manager
-        component backend RealTime_Processing
-        component backend Storage_Manager
-        component apiGateway Information_Transmission
-        component backend ContingencyLink
-
-        component frontend WebApp
-        component proxy Proxy
-        component interface Interface
-
-        component database Routes_DB
-        component database Security_DB
-        component database Meteorology_DB
-        component database Vessels_DB
-        component database Traceability_DB
-        component database Storage_DB
-        component database ContingencyLink_DB
-
-        connector db_connector Route_Manager -> Routes_DB
-        connector db_connector Security_System -> Security_DB
-        connector db_connector Meteorology_System -> Meteorology_DB
-        connector db_connector Vessel_Manager -> Vessels_DB
-        connector db_connector Traceability_Manager -> Traceability_DB
-        connector db_connector Storage_Manager -> Storage_DB
-        connector db_connector ContingencyLink -> ContingencyLink_DB
-
+        
+        component interface NCS
+        component resilienceManager Resilience_Manager capacity = 800
+        component apiGateway API_Gateway capacity = 800
+        component channel ISCL capacity = 800
+        
+        component cache Global_Cache capacity = 5000
+        
+        component backend Route_Manager_1 capacity = 500
+        component backend Route_Manager_2 capacity = 500
+        component backend Route_Manager_3 capacity = 500
+        component loadBalancer LB_Route_Manager
+        
+        component backend Security_System_1 capacity = 500
+        component backend Security_System_2 capacity = 500
+        component backend Security_System_3 capacity = 500
+        component loadBalancer LB_Security_System
+        
+        component backend Meteorology_System_1 capacity = 500
+        component backend Meteorology_System_2 capacity = 500
+        component backend Meteorology_System_3 capacity = 500
+        component loadBalancer LB_Meteorology_System
+        
+        component backend Vessel_Manager_1 capacity = 500
+        component backend Vessel_Manager_2 capacity = 500
+        component backend Vessel_Manager_3 capacity = 500
+        component loadBalancer LB_Vessel_Manager
+        
+        component backend Traceability_Manager_1 capacity = 500
+        component backend Traceability_Manager_2 capacity = 500
+        component backend Traceability_Manager_3 capacity = 500
+        component loadBalancer LB_Traceability_Manager
+        
+        component backend RealTime_Processing_1 capacity = 500
+        component backend RealTime_Processing_2 capacity = 500
+        component backend RealTime_Processing_3 capacity = 500
+        component loadBalancer LB_RealTime_Processing
+        
+        component backend Storage_Manager_1 capacity = 500
+        component backend Storage_Manager_2 capacity = 500
+        component backend Storage_Manager_3 capacity = 500
+        component loadBalancer LB_Storage_Manager
+        
+        component apiGateway Information_Transmission capacity = 1000
+        
+        component database Routes_DB capacity = 800
+        component database Security_DB capacity = 800
+        component database Meteorology_DB capacity = 800
+        component database Vessels_DB capacity = 800
+        component database Traceability_DB capacity = 800
+        component database Storage_DB capacity = 800
+        
+        component connectionPool CP_Route_Manager capacity = 50
+        component connectionPool CP_Security_System capacity = 50
+        component connectionPool CP_Meteorology_System capacity = 50
+        component connectionPool CP_Vessel_Manager capacity = 50
+        component connectionPool CP_Traceability_Manager capacity = 50
+        component connectionPool CP_Storage_Manager capacity = 50
+        component connectionPool CP_RealTime_Processing capacity = 50
+        
         connector RESTful Vessel_1 -> IoT_Gateway
-        connector MQTT IoT_Gateway -> RealTime_Processing
-
-        connector RESTful Information_Transmission -> Route_Manager
-        connector RESTful Information_Transmission -> Security_System
-        connector RESTful Information_Transmission -> Meteorology_System
-        connector RESTful Information_Transmission -> Vessel_Manager
-        connector RESTful Information_Transmission -> Traceability_Manager
-        connector RESTful Information_Transmission -> Storage_Manager
-        connector RESTful Information_Transmission -> RealTime_Processing
-        connector RESTful Information_Transmission -> ContingencyLink
-
-
-        connector RESTful Information_Transmission -> Interface
-        connector GraphQL Information_Transmission -> Interface      
-        connector RESTful WebApp -> Proxy
+        connector RESTful Vessel_2 -> IoT_Gateway
+        connector MQTT IoT_Gateway -> RealTime_Processing_1
+        
+        connector RESTful NCS -> Resilience_Manager
+        connector RESTful Resilience_Manager -> API_Gateway
+        connector RESTful Resilience_Manager -> ISCL
+        connector RESTful API_Gateway -> Information_Transmission
+        connector RESTful ISCL -> Information_Transmission
+        
+        connector RESTful Information_Transmission -> LB_Route_Manager
+        connector RESTful LB_Route_Manager -> Route_Manager_1
+        connector RESTful LB_Route_Manager -> Route_Manager_2
+        connector RESTful LB_Route_Manager -> Route_Manager_3
+        
+        connector RESTful Information_Transmission -> LB_Security_System
+        connector RESTful LB_Security_System -> Security_System_1
+        connector RESTful LB_Security_System -> Security_System_2
+        connector RESTful LB_Security_System -> Security_System_3
+        
+        connector RESTful Information_Transmission -> LB_Meteorology_System
+        connector RESTful LB_Meteorology_System -> Meteorology_System_1
+        connector RESTful LB_Meteorology_System -> Meteorology_System_2
+        connector RESTful LB_Meteorology_System -> Meteorology_System_3
+        
+        connector RESTful Information_Transmission -> LB_Vessel_Manager
+        connector RESTful LB_Vessel_Manager -> Vessel_Manager_1
+        connector RESTful LB_Vessel_Manager -> Vessel_Manager_2
+        connector RESTful LB_Vessel_Manager -> Vessel_Manager_3
+        
+        connector RESTful Information_Transmission -> LB_Traceability_Manager
+        connector RESTful LB_Traceability_Manager -> Traceability_Manager_1
+        connector RESTful LB_Traceability_Manager -> Traceability_Manager_2
+        connector RESTful LB_Traceability_Manager -> Traceability_Manager_3
+        
+        connector RESTful Information_Transmission -> LB_Storage_Manager
+        connector RESTful LB_Storage_Manager -> Storage_Manager_1
+        connector RESTful LB_Storage_Manager -> Storage_Manager_2
+        connector RESTful LB_Storage_Manager -> Storage_Manager_3
+        
+        connector RESTful Information_Transmission -> LB_RealTime_Processing
+        connector RESTful LB_RealTime_Processing -> RealTime_Processing_1
+        connector RESTful LB_RealTime_Processing -> RealTime_Processing_2
+        connector RESTful LB_RealTime_Processing -> RealTime_Processing_3
+        
+        connector dbConnector Route_Manager_1 -> CP_Route_Manager
+        connector dbConnector Route_Manager_2 -> CP_Route_Manager
+        connector dbConnector Route_Manager_3 -> CP_Route_Manager
+        connector dbConnector CP_Route_Manager -> Routes_DB
+        
+        connector dbConnector Security_System_1 -> CP_Security_System
+        connector dbConnector Security_System_2 -> CP_Security_System
+        connector dbConnector Security_System_3 -> CP_Security_System
+        connector dbConnector CP_Security_System -> Security_DB
+        
+        connector dbConnector Meteorology_System_1 -> CP_Meteorology_System
+        connector dbConnector Meteorology_System_2 -> CP_Meteorology_System
+        connector dbConnector Meteorology_System_3 -> CP_Meteorology_System
+        connector dbConnector CP_Meteorology_System -> Meteorology_DB
+        
+        connector dbConnector Vessel_Manager_1 -> CP_Vessel_Manager
+        connector dbConnector Vessel_Manager_2 -> CP_Vessel_Manager
+        connector dbConnector Vessel_Manager_3 -> CP_Vessel_Manager
+        connector dbConnector CP_Vessel_Manager -> Vessels_DB
+        
+        connector dbConnector Traceability_Manager_1 -> CP_Traceability_Manager
+        connector dbConnector Traceability_Manager_2 -> CP_Traceability_Manager
+        connector dbConnector Traceability_Manager_3 -> CP_Traceability_Manager
+        connector dbConnector CP_Traceability_Manager -> Traceability_DB
+        
+        connector dbConnector Storage_Manager_1 -> CP_Storage_Manager
+        connector dbConnector Storage_Manager_2 -> CP_Storage_Manager
+        connector dbConnector Storage_Manager_3 -> CP_Storage_Manager
+        connector dbConnector CP_Storage_Manager -> Storage_DB
+        
+        connector dbConnector RealTime_Processing_1 -> CP_RealTime_Processing
+        connector dbConnector RealTime_Processing_2 -> CP_RealTime_Processing
+        connector dbConnector RealTime_Processing_3 -> CP_RealTime_Processing
+        connector dbConnector CP_RealTime_Processing -> Storage_DB
+        
+        connector RESTful API_Gateway -> Global_Cache
     }
